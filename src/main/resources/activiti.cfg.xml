@@ -13,6 +13,7 @@
         <property name="jdbcUsername" value="root" />
         <property name="jdbcPassword" value="root" />
         <property name="databaseSchemaUpdate" value="true" />
+        <property name="asyncExecutorActivate" value="true" />
 
         <property name="idGenerator">
             <bean class="org.activiti.engine.impl.persistence.StrongUuidGenerator" />

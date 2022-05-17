@@ -17,11 +17,12 @@ public class TaskPoller implements ApplicationRunner {
 
     String base_url = "http://localhost:8080";
 
+    boolean enablePoller = true;
 
     @Override
     public void run(ApplicationArguments args) {
 
-        while (true) {
+        while (enablePoller) {
             try {
                 RestTemplate restTemplate = new RestTemplate();
 
@@ -29,18 +30,18 @@ public class TaskPoller implements ApplicationRunner {
                                 "/api/process/task/" + taskCategory,
                         TaskDTO.class);
 
-                if (response.getStatusCode().is2xxSuccessful()) {
+                if (response.getStatusCode().is2xxSuccessful() && response.getBody()!=null) {
 
                     processTask(response.getBody());
 
                 } else {
                     log.info("No tasks for category {}", taskCategory);
-                    Thread.sleep(1*60*1000);
+                    Thread.sleep(1*30*1000);
                 }
             }catch (Exception e){
                 e.printStackTrace();
             }
-            break;
+            //break;
         }
 
     }
@@ -52,7 +53,8 @@ public class TaskPoller implements ApplicationRunner {
             }
 
             log.info("Processing task {}", task.getId());
-            Thread.sleep(10000);
+            //Thread.sleep(10000);
+            //int i = 0 / 0;
             log.info("Processing completed for task {}", task.getId());
             completeTask(task);
 
